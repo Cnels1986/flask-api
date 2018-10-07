@@ -2,6 +2,7 @@ from flask import Flask
 from flaskext.mysql import MySQL
 from flask import jsonify
 from flask import render_template
+from flask import request, redirect, url_for
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -26,7 +27,7 @@ def home():
 def index():
     cursor.execute('SELECT * FROM games')
     games = cursor.fetchall()
-    print(games)
+    # print(games)
     # response = jsonify(games)
     return render_template('gamesPage.html', games=games)
     # return response
@@ -59,6 +60,17 @@ def update(game_id):
     game = cursor.fetchone()
     return render_template('gameEdit.html', game=game)
 
-@app.route('/create')
+
+
+@app.route('/create', methods=('GET', 'POST'))
 def create():
+    if request.method == 'POST':
+        name = request.form['name']
+        console = request.form['console']
+        year = request.form['year']
+        print('INSERT INTO games (name, year, console) VALUES (%s, %s, %s)' % (name, int(year), console))
+        # cursor.execute('INSERT INTO games (name, year, console) VALUES (%s, %d, %s)' % (name, int(year), console))
+        cursor.execute("INSERT INTO games (name, year, console) VALUES ('{}','{}','{}')".format(name, int(year), console))
+        conn.commit()
+        return redirect(url_for('index'))
     return render_template('gameForm.html')
