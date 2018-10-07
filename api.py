@@ -1,6 +1,7 @@
 from flask import Flask
 from flaskext.mysql import MySQL
 from flask import jsonify
+from flask import render_template
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -18,37 +19,46 @@ cursor = conn.cursor()
 
 @app.route('/')
 def home():
-    return 'Home page'
+    return render_template('index.html')
 
-
+# route used for getting all the games within the table to creating a new entry to the table
 @app.route('/games')
 def index():
     cursor.execute('SELECT * FROM games')
-    test = cursor.fetchall()
-    print(test)
+    games = cursor.fetchall()
+    print(games)
+    # response = jsonify(games)
+    return render_template('gamesPage.html', games=games)
+    # return response
 
-    return "whatever"
-    # return jsonify(id=g.test.id,
-    #                name=g.test.name,
-    #                year=g.test.year,
-    #                console=g.test.console)
 
+# route is used to get a game by its id from the table
 @app.route('/games/<int:game_id>')
 def show(game_id):
     cursor.execute('SELECT * FROM games WHERE id = %d' % game_id)
-    test = cursor.fetchone()
-    print(test)
-    return 'Show game %d' % game_id
-
+    game = cursor.fetchone()
+    response = jsonify(game)
+    # return response
+    return render_template('gameShow.html', game=game)
+#
+# # route is used to delete a row in the table based on the give id
 @app.route('/delete/<int:game_id>')
 def delete(game_id):
     cursor.execute('DELETE FROM games WHERE id = %d' % game_id)
-    return 'Delete %d' % game_id
-
+    conn.commit()
+    cursor.execute('SELECT * FROM games')
+    games = cursor.fetchall()
+    # response = jsonify(games)
+    return render_template('gamesPage.html', games=games)
+    # return response
+#
+# # route is used to update a row within the table
 @app.route('/update/<int:game_id>')
 def update(game_id):
-    return 'Update %d' % game_id
+    cursor.execute('SELECT * FROM games WHERE id = %d' % game_id)
+    game = cursor.fetchone()
+    return render_template('gameEdit.html', game=game)
 
 @app.route('/create')
 def create():
-    return 'Create'
+    return render_template('gameForm.html')

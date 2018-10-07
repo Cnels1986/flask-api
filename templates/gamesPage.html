@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block content %}
+  <h1>Games List:</h1>
+  {% for game in games %}
+
+    <h2>Name: {{ game[1] }}</h2>
+    <h3>Year: {{ game[2] }}</h3>
+    <h3>Console: {{ game[3] }}</h3>
+    <a href="{{ url_for('show', game_id=game[0]) }}">View game</a>
+    <a href="{{ url_for('update', game_id=game[0]) }}">Edit game</a>
+    <a href="{{ url_for('delete', game_id=game[0]) }}">Delete game</a>
+
+  {% endfor %}
+{% endblock %}

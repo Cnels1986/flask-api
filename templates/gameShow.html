@@ -1,0 +1,8 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <h2>Name: {{ game[1] }}</h2>
+    <h3>Year: {{ game[2] }}</h3>
+    <h3>Console: {{ game[3] }}</h3>
+    <a href="{{ url_for('index') }}">Back</a>
+{% endblock %}
