@@ -2,24 +2,6 @@
 
 {% block content %}
 <h1>This will be a form for creation</h1>
-<!-- <form id='gamesForm' method="POST">
-  <div class="form-group">
-    <label for="name">Name:</label>
-    <input name="name" type="text" class="form-control" id="name" placeholder="Enter game name">
-  </div>
-  <div class="form-group">
-    <label for="console">Console:</label>
-    <input name="console" type="text" class="form-control" id="console" placeholder="Enter console">
-  </div>
-  <div class="form-group">
-    <label for="year">Release Year:</label>
-    <input name="year" type="text" class="form-control" id="year" placeholder="Enter year of release">
-  </div>
-
-  <div class="button">
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a class="btn btn-info" href="{{ url_for('index') }}">Cancel</a>
-  </div> -->
   <form method="post">
      <label for="name">Name</label>
      <input name="name" id="name" value="{{ request.form['name'] }}" required>
@@ -28,8 +10,9 @@
      <input name="year" id="year" value="{{ request.form['year'] }}" required>
 
      <label for="console">Console</label>
-     <input name="console" id="console" vale="{{ request.form['console'] }}" required>
+     <input name="console" id="console" value="{{ request.form['console'] }}" required>
 
-     <input type="submit" value="Save">
+     <input type="submit" value="Add Game">
   </form>
+  <a href="{{ url_for('index') }}">Back</a>
 {% endblock %}
